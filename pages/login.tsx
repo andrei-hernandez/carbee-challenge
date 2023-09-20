@@ -22,7 +22,7 @@ export default function Login (): React.JSX.Element {
         await axios.request<ILoginResponse>({
           method: "post",
           maxBodyLength: Infinity,
-          url: "/api/auth",
+          url: "api/auth",
           headers: {
             "Content-Type": "application/json"
           },
