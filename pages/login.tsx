@@ -1,9 +1,9 @@
-import { LoginForm } from "@/components/Auth/LoginForm";
-import { ILoginForm } from "@/types/Auth";
-import { Card } from "antd";
-import { useRouter } from "next/router";
+import { LoginForm } from "@/components/Auth/LoginForm"
+import { ILoginForm } from "@/types/Auth"
+import { Card } from "antd"
+import { useRouter } from "next/router"
 
-export default function Login () {
+export default function Login (): React.JSX.Element {
   const router = useRouter()
 
   const onSubmit = async (formValues: ILoginForm): Promise<void> => {
