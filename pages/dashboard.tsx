@@ -5,6 +5,9 @@ import { AppLayout } from "@/components/Layout"
 import { GetServerSideProps } from "next"
 import { IAppointment } from "@/types/Appointment"
 import { AvailableDatesPanel } from "@/components/AvailableDates/AvailableDatesPanel"
+import { checkAuth } from "@/utils/checkAuth"
+import { getAppointments } from "@/services/appointmentService"
+import { getAvailableDates } from "@/services/availableDatesService"
 
 interface IDashboardPageProps {
   appointments: Array<IAppointment>
@@ -78,65 +81,12 @@ export default function Dashboard ({ appointments, availableDates }: IDashboardP
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const appointments: Array<IAppointment> =
-    [
-      {
-        id: "64e3dd82621ec5bb91c9773d",
-        paymentId: "pm_7Ff32kK1Cj",
-        userId: "u_2ff6KJ2io445d",
-        duration: 211,
-        scheduledTime: "2023-08-16T21:13:18.371Z",
-        status: "SCHEDULED",
-        workOrder: { service: "Brake Fluid" }
-      },
-      {
-        id: "64e3dd828fb675a1287316fe",
-        paymentId: "pm_7Ff32kK1Cj",
-        userId: "u_2ff6KJ2io445d",
-        duration: 270,
-        scheduledTime: "2023-08-12T21:41:47.934Z",
-        status: "COMPLETE",
-        workOrder: { service: "Air Conditioning Repair" }
-      },
-      {
-        id: "64e3dd82eda6215f916ed931",
-        paymentId: "pm_7Ff32kK1Cj",
-        userId: "u_2ff6KJ2io445d",
-        duration: 185,
-        scheduledTime: "2023-08-12T19:05:51.533Z",
-        status: "SCHEDULED",
-        workOrder: { service: "Brake Fluid" }
-      },
-      {
-        id: "64e3dd82e351e90db5e43278",
-        paymentId: "pm_7Ff32kK1Cj",
-        userId: "u_2ff6KJ2io445d",
-        duration: 307,
-        scheduledTime: "2023-08-06T10:08:43.111Z",
-        status: "SCHEDULED",
-        workOrder: { service: "Flux Capacitor Callabration" }
-      },
-      {
-        id: "64e3dd82666a47020c142c9d",
-        paymentId: "pm_7Ff32kK1Cj",
-        userId: "u_2ff6KJ2io445d",
-        duration: 62,
-        scheduledTime: "2023-07-15T14:52:14.519Z",
-        status: "SCHEDULED",
-        workOrder: { service: "Blinker Fluid" }
-      }
-    ]
+export const getServerSideProps: GetServerSideProps = async ctx => {
 
-  const availableDates: Array<string> = [
-    "2023-09-21T08:00:00.000Z",
-    "2023-09-21T09:00:00.000Z",
-    "2023-09-21T10:00:00.000Z",
-    "2023-09-21T11:00:00.000Z",
-    "2023-09-21T12:00:00.000Z",
-    "2023-09-21T13:00:00.000Z",
-    "2023-09-21T14:00:00.000Z"
-  ]
+  const token = checkAuth(ctx)
+
+  const appointments: Array<IAppointment> = await getAppointments(token.token)
+  const availableDates: Array<string> = await getAvailableDates(token.token)
 
   return {
     props: {

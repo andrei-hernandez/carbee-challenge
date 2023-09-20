@@ -1,6 +1,8 @@
 import { Button, Col, DatePicker, List, Row, Space, message } from "antd"
 import { FunctionComponent, useState } from "react"
 import dayjs from "dayjs"
+import { parseCookies } from "nookies"
+import axios from "axios"
 
 interface IAvailableDatesPanelProps {
   InitialAvailableDates: Array<string>
@@ -14,8 +16,16 @@ export const AvailableDatesPanel: FunctionComponent<IAvailableDatesPanelProps>
 
     const [messageApi, contextHolder] = message.useMessage()
 
-    const handleSearchAvailability = (): void => {
-      console.log("handleSearchAvailability", selectedDate)
+    const handleSearchAvailability = async (): Promise<void> => {
+      const { token } = parseCookies()
+      const response = await axios.get<{ availableDates: Array<string> }>(
+        `/api/availability/${selectedDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      setAvailableDates(response.data.availableDates)
     }
 
     const success = (selectedDate: string): void => {

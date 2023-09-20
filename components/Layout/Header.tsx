@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react"
 import { Layout, Button, Row, Col } from "antd"
 import { useRouter } from "next/router"
+import { destroyCookie } from "nookies"
 
 interface IHeaderProps {
   colorBgContainer: string
@@ -12,7 +13,7 @@ export const Header: FunctionComponent<IHeaderProps> = ({ colorBgContainer }) =>
   const router = useRouter()
 
   const handleLogOut = (): void => {
-    //logOut()
+    destroyCookie(null, "token")
     router.push("/login")
   }
 
