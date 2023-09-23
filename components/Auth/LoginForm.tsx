@@ -1,6 +1,6 @@
-import { Button, Col, Form, Input, Row } from "antd"
+
 import { ILoginForm } from "@/types/Auth"
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useState } from "react"
 
 interface ILoginFormProps {
   onSubmit: (formValues: ILoginForm) => Promise<void>
@@ -8,47 +8,45 @@ interface ILoginFormProps {
 
 export const LoginForm: FunctionComponent<ILoginFormProps> = ({ onSubmit }): JSX.Element => {
 
-  const [form] = Form.useForm()
+  const [formValues, setFormValues] = useState<{ username: string, password: string }>({ username: "", password: "" })
 
   const handleSubmit = async (): Promise<void> => {
-    await form.validateFields()
-    const values = form.getFieldsValue()
-    await onSubmit(values)
+    await onSubmit({ email: formValues.username, password: formValues.password })
   }
 
   return (
-    <Form
-      form={form}
-      className="login-card-form"
-      layout="vertical"
-      initialValues={{ remember: true }}>
-      <Row className="login-form">
-        <Col span={24}>
-          <Form.Item
-            label="Username"
-            name="email"
-            rules={[{ required: true, message: "Please input your username!" }]}>
-            <Input type="email" />
-          </Form.Item>
-        </Col>
-        <Col span={24}>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}>
-            <Input.Password />
-          </Form.Item>
-        </Col>
-        <Col span={24}>
-          <Button
-            type="primary"
-            htmlType="submit"
+    <form
+      className="login-card-form">
+      <div className="login-form">
+        <div className="login-item">
+          <span className="username-label">
+            Username
+          </span>
+          <input
+            onChange={({ target: { value } }): void =>
+              setFormValues(prevState => ({ ...prevState, username: value }))}
+            type="text"
+            title="username" />
+        </div>
+        <div className="login-item">
+          <span className="password-label">
+            Password
+          </span>
+          <input
+            onChange={({ target: { value } }): void =>
+              setFormValues(prevState => ({ ...prevState, password: value }))}
+            type="password"
+            title="password" />
+        </div>
+        <div>
+          <button
+            type="button"
             onClick={(): Promise<void> => handleSubmit()}
             className="login-form-button">
             Log in
-          </Button>
-        </Col>
-      </Row>
-    </Form>
+          </button>
+        </div>
+      </div>
+    </form>
   )
 }

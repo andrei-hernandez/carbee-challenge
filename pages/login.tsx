@@ -1,7 +1,6 @@
 import { LoginForm } from "@/components/Auth/LoginForm"
 import { ILoginResponse } from "@/types/API"
 import { ILoginForm } from "@/types/Auth"
-import { Card } from "antd"
 import axios from "axios"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
@@ -38,12 +37,11 @@ export default function Login (): React.JSX.Element {
 
   return (
     <div className="login-page">
-      <Card
-        headStyle={{ textAlign: "center", fontSize: "1.5rem" }}
+      <div
         title="Log In"
         className="login-card-container">
         <LoginForm onSubmit={onSubmit} />
-      </Card>
+      </div>
     </div>
   )
 }

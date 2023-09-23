@@ -1,13 +1,13 @@
 import React from "react"
-import { Row, Col, List, Layout, Typography } from "antd"
 import { AppointmentCard } from "@/components/Appointment/AppointmentCard"
-import { AppLayout } from "@/components/Layout"
 import { GetServerSideProps } from "next"
 import { IAppointment } from "@/types/Appointment"
 import { AvailableDatesPanel } from "@/components/AvailableDates/AvailableDatesPanel"
 import { checkAuth } from "@/utils/checkAuth"
 import { getAppointments } from "@/services/appointmentService"
 import { getAvailableDates } from "@/services/availableDatesService"
+import { destroyCookie } from "nookies"
+import { useRouter } from "next/router"
 
 interface IDashboardPageProps {
   appointments: Array<IAppointment>
@@ -15,69 +15,45 @@ interface IDashboardPageProps {
 }
 
 export default function Dashboard ({ appointments, availableDates }: IDashboardPageProps): React.JSX.Element {
+
+  const router = useRouter()
+
   return (
-    <AppLayout>
-      <Layout>
-        <Layout.Header
-          style={{
-            top: 0,
-            zIndex: 2,
-            padding: 0,
-            width: "100%",
-            position: "sticky",
-            background: "#fff"
-          }}>
-          <Row justify="space-around">
-            <Col>
-              <Typography.Title className="appointments-title">
-                Appointments
-              </Typography.Title>
-            </Col>
-            <Col>
-              <Typography.Title className="available-dates-title">
-                Available Dates
-              </Typography.Title>
-            </Col>
-          </Row>
-        </Layout.Header>
-        <Layout.Content style={{
-          background: "#ffff",
-          padding: 0,
-          margin: 0
-        }}>
-          <Row
-            justify="center" align="top"
-            gutter={[100, 10]}>
-            <Col span={12}>
-              <List
-                pagination={{
-                  pageSize: 8,
-                  align: "end"
-                }}
-                grid={{
-                  gutter: 16,
-                  xs: 1,
-                  sm: 1,
-                  md: 1,
-                  lg: 1,
-                  xl: 1,
-                  xxl: 1
-                }}
-                dataSource={appointments}
-                renderItem={(appointment: IAppointment): React.JSX.Element => (
-                  <List.Item>
-                    <AppointmentCard
-                      item={appointment} />
-                  </List.Item>
-                )} />
-            </Col>
-            <Col span={12}>
-              <AvailableDatesPanel InitialAvailableDates={availableDates} />
-            </Col>
-          </Row>
-        </Layout.Content>
-      </Layout>
-    </AppLayout>
+    <div>
+      <div className="dashboard-nav">
+        <button
+          onClick={(): void => {
+            destroyCookie(null, "token")
+            router.push("/login")
+          }} type="button">Logout</button>
+      </div>
+      <div className="dashboard-header">
+        <div className="appointments-title">
+          <h2>
+            Appointments
+          </h2>
+        </div>
+        <div className="available-dates-title">
+          <h2>
+            Available Dates
+          </h2>
+        </div>
+      </div>
+      <div className="dashboard-content">
+        <div>
+          <div className="appointments-grid">
+            {/* // replace this for a natural list */}
+            {appointments.map((appointment: IAppointment) => (
+              <AppointmentCard
+                key={appointment.id}
+                item={appointment} />))}
+          </div>
+        </div>
+        <div>
+          <AvailableDatesPanel InitialAvailableDates={availableDates} />
+        </div>
+      </div>
+    </div>
   )
 }
 

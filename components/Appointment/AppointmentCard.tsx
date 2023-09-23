@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react"
-import { Card, Row, Col, Typography, Space } from "antd"
 import { IAppointment } from "@/types/Appointment"
 
 interface IAppointmentCardProps {
@@ -44,31 +43,31 @@ export const AppointmentCard: FunctionComponent<IAppointmentCardProps> =
     }
 
     return (
-      <Card title="March 29, 2023">
-        <Row className="appointment-card-content">
-          <Col span={24}>
-            <Space direction="vertical" size={0}>
-              <Typography.Text style={{ fontSize: "18px" }}>
+      <div className="appointment-card-body" title="March 29, 2023">
+        <div className="appointment-card-content">
+          <div>
+            <div>
+              <div style={{ fontSize: "18px" }}>
                 {statusStore[item.status]}
-              </Typography.Text>
-              <Typography.Text style={{ fontSize: "18px", opacity: "80%" }}>
+              </div>
+              <div style={{ fontSize: "18px", opacity: "80%" }}>
                 {buildHours(item.scheduledTime)} - {item.status === status.COMPLETE
                   ? buildFinishTime(item.scheduledTime, item.duration)
                   : `TBD (ETA: ${buildFinishTime(item.scheduledTime, item.duration)} - ${item.duration} minutes)`}
-              </Typography.Text>
-            </Space>
-          </Col>
-          <Col span={24} style={{ marginTop: "1rem" }}>
-            <Space direction="vertical" size={0}>
-              <Typography.Title level={5} color="">
+              </div>
+            </div>
+          </div>
+          <div style={{ marginTop: "1rem" }}>
+            <div>
+              <div>
                 Service
-              </Typography.Title>
-              <Typography.Text style={{ fontSize: "18px", opacity: "80%" }}>
+              </div>
+              <div style={{ fontSize: "18px", opacity: "80%" }}>
                 {item.workOrder.service}
-              </Typography.Text>
-            </Space>
-          </Col>
-        </Row>
-      </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
