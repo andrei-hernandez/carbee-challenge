@@ -14,7 +14,7 @@ interface IDashboardPageProps {
   availableDates: Array<string>
 }
 
-export default function Dashboard ({ appointments, availableDates }: IDashboardPageProps): React.JSX.Element {
+export default function Dashboard ({ appointments, availableDates }: Readonly<IDashboardPageProps>): React.JSX.Element {
   return (
     <AppLayout>
       <Layout>
@@ -84,7 +84,6 @@ export default function Dashboard ({ appointments, availableDates }: IDashboardP
 export const getServerSideProps: GetServerSideProps = async ctx => {
 
   const token = checkAuth(ctx)
-
   const appointments: Array<IAppointment> = await getAppointments(token.token)
   const availableDates: Array<string> = await getAvailableDates(token.token)
 

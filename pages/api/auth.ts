@@ -24,7 +24,6 @@ export default async function handler (
     data: data
   }
 
-
   const response = await axios.request(config)
   res.status(200).json({ token: response.data.token })
 }
